@@ -1,0 +1,15 @@
+vich_uploader:
+    db_driver: orm
+    
+    metadata:
+        type: attribute  # Utilise les attributs PHP 8 (ou "annotation" pour PHP < 8)
+    
+    mappings:
+        product_image:  # Pour les images de produits
+            uri_prefix: /uploads/products
+            upload_destination: '%kernel.project_dir%/public/uploads/products'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer  # Nom unique pour les fichiers
+        
+        project_file:  # Pour les fichiers de projets
+            uri_prefix: /uploads/projects
+            upload_destination: '%kernel.project_dir%/public/uploads/projects'

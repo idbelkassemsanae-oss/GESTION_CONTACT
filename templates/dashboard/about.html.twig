@@ -1,0 +1,203 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos - ContactManager{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="text-center mb-5 mt-3">
+                <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                     style="width: 100px; height: 100px;">
+                    <i class="fas fa-address-book fa-3x text-white"></i>
+                </div>
+                <h1 class="display-5 fw-bold mb-2">ContactManager Pro</h1>
+                <p class="lead text-muted">Application professionnelle de gestion de contacts</p>
+                <div class="badge bg-primary fs-6 mb-4">Version 1.0.0</div>
+            </div>
+
+            <!-- Content -->
+            <div class="row">
+                <!-- Features -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h4 class="mb-0">
+                                <i class="fas fa-star me-2"></i> Fonctionnalités Principales
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                            <i class="fas fa-user-plus text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Ajout de contacts</h6>
+                                            <small class="text-muted">Ajoutez facilement de nouveaux contacts</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="bg-success bg-opacity-10 p-2 rounded me-3">
+                                            <i class="fas fa-search text-success"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Recherche avancée</h6>
+                                            <small class="text-muted">Recherchez par nom, prénom, email</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="bg-info bg-opacity-10 p-2 rounded me-3">
+                                            <i class="fas fa-images text-info"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Photos de profil</h6>
+                                            <small class="text-muted">Gérez les photos de vos contacts</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="bg-warning bg-opacity-10 p-2 rounded me-3">
+                                            <i class="fas fa-chart-bar text-warning"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Tableau de bord</h6>
+                                            <small class="text-muted">Statistiques et visualisations</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="bg-danger bg-opacity-10 p-2 rounded me-3">
+                                            <i class="fas fa-file-export text-danger"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Export des données</h6>
+                                            <small class="text-muted">Exportez vos contacts en différents formats</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex align-items-start">
+                                        <div class="bg-secondary bg-opacity-10 p-2 rounded me-3">
+                                            <i class="fas fa-mobile-alt text-secondary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Responsive design</h6>
+                                            <small class="text-muted">Accessible sur tous les appareils</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technologies -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h4 class="mb-0">
+                                <i class="fas fa-code me-2"></i> Technologies Utilisées
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <h6 class="mb-3">Backend</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <span class="badge bg-primary p-2">
+                                        <i class="fab fa-php me-1"></i> Symfony 7
+                                    </span>
+                                    <span class="badge bg-success p-2">
+                                        <i class="fas fa-database me-1"></i> Doctrine ORM
+                                    </span>
+                                    <span class="badge bg-info p-2">
+                                        <i class="fas fa-server me-1"></i> MySQL
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6 class="mb-3">Frontend</h6>
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <span class="badge bg-warning p-2">
+                                        <i class="fab fa-bootstrap me-1"></i> Bootstrap 5
+                                    </span>
+                                    <span class="badge bg-secondary p-2">
+                                        <i class="fab fa-js-square me-1"></i> JavaScript
+                                    </span>
+                                    <span class="badge bg-dark p-2">
+                                        <i class="fab fa-html5 me-1"></i> HTML5
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h6 class="mb-3">Bibliothèques & Outils</h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge bg-danger p-2">
+                                        <i class="fab fa-font-awesome me-1"></i> Font Awesome
+                                    </span>
+                                    <span class="badge bg-success p-2">
+                                        <i class="fas fa-upload me-1"></i> VichUploader
+                                    </span>
+                                    <span class="badge bg-info p-2">
+                                        <i class="fas fa-pager me-1"></i> Paginator
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team & Info -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h4 class="mb-2">
+                                        <i class="fas fa-users me-2"></i> Équipe de Développement
+                                    </h4>
+                                    <p class="text-muted mb-0">
+                                        ContactManager a été développé par une équipe passionnée dédiée à fournir 
+                                        la meilleure solution de gestion de contacts pour les professionnels et les entreprises.
+                                    </p>
+                                </div>
+                                <div class="col-md-4 text-md-end">
+                                    <a href="{{ path('app_dashboard') }}" class="btn btn-primary">
+                                        <i class="fas fa-arrow-left me-2"></i> Retour au Dashboard
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <small class="text-muted">
+                                        <i class="fas fa-envelope me-1"></i>
+                                        support@contactmanager.com
+                                    </small>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <small class="text-muted">
+                                        <i class="fas fa-copyright me-1"></i>
+                                        {{ 'now'|date('Y') }} ContactManager - Tous droits réservés
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

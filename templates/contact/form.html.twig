@@ -1,0 +1,213 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <div>
+            <a href="{{ path('app_contact_index') }}" class="btn btn-outline-secondary btn-sm me-2">
+                <i class="fas fa-arrow-left me-1"></i> Retour
+            </a>
+            <h1 class="h3 mb-0 d-inline">
+                <i class="fas {{ contact.id ? 'fa-edit text-warning' : 'fa-user-plus text-primary' }} me-2"></i> 
+                {{ title }}
+            </h1>
+        </div>
+        {% if contact.id %}
+            <a href="{{ path('app_contact_show', {'id': contact.id}) }}" class="btn btn-info">
+                <i class="fas fa-eye me-1"></i> Voir
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Form -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-address-card me-2"></i> 
+                        Informations du contact
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
+                        
+                        <!-- Photo Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    {% if contact.image %}
+                                        <img src="/uploads/contacts/{{ contact.image }}" 
+                                             alt="Photo actuelle" 
+                                             class="img-thumbnail mb-3" 
+                                             style="max-height: 200px;">
+                                        <p class="text-muted small">Photo actuelle</p>
+                                    {% else %}
+                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mb-3" 
+                                             style="width: 150px; height: 150px; margin: 0 auto;">
+                                            <i class="fas fa-user fa-3x text-muted"></i>
+                                        </div>
+                                        <p class="text-muted small">Aucune photo</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Photo de profil</label>
+                                    {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="form-text">
+                                        Formats acceptés : JPG, PNG, GIF (max 2Mo)
+                                    </div>
+                                    {% if contact.image %}
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="checkbox" name="remove_image" id="remove_image">
+                                            <label class="form-check-label text-danger" for="remove_image">
+                                                Supprimer la photo actuelle
+                                            </label>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Info -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prénom *</label>
+                                {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Jean'}}) }}
+                                <div class="invalid-feedback">
+                                    Veuillez saisir un prénom valide.
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom *</label>
+                                {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Dupont'}}) }}
+                                <div class="invalid-feedback">
+                                    Veuillez saisir un nom valide.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email *</label>
+                                {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'jean.dupont@exemple.com'}}) }}
+                                <div class="invalid-feedback">
+                                    Veuillez saisir un email valide.
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Téléphone</label>
+                                {{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'placeholder': '0123456789'}}) }}
+                                <div class="form-text">
+                                    Format : 0123456789 ou +33 1 23 45 67 89
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label class="form-label">Adresse</label>
+                            {{ form_widget(form.adresse, {'attr': {'class': 'form-control', 'placeholder': '123 Rue de la Paix, 75000 Paris', 'rows': 3}}) }}
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{{ path('app_contact_index') }}" class="btn btn-secondary">
+                                <i class="fas fa-times me-1"></i> Annuler
+                            </a>
+                            <div>
+                                <button type="reset" class="btn btn-outline-secondary me-2">
+                                    <i class="fas fa-redo me-1"></i> Réinitialiser
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-1"></i> 
+                                    {{ contact.id ? 'Mettre à jour' : 'Enregistrer' }}
+                                </button>
+                            </div>
+                        </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+            <!-- Form Help -->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6 class="mb-3">
+                        <i class="fas fa-info-circle me-2"></i> Informations importantes
+                    </h6>
+                    <ul class="list-unstyled text-muted small mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-asterisk text-danger me-1"></i>
+                            Les champs marqués d'un astérisque (*) sont obligatoires
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-camera text-warning me-1"></i>
+                            La photo est optionnelle, formats acceptés : JPG, PNG, GIF (max 2Mo)
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-shield-alt text-success me-1"></i>
+                            Toutes vos données sont sécurisées et confidentielles
+                        </li>
+                        {% if contact.id %}
+                            <li>
+                                <i class="fas fa-history text-info me-1"></i>
+                                Dernière modification : 
+                                {{ contact.dateModification ? contact.dateModification|date('d/m/Y à H:i') : contact.dateCreation|date('d/m/Y à H:i') }}
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        // Validation Bootstrap
+        (function () {
+            'use strict'
+            
+            const forms = document.querySelectorAll('.needs-validation')
+            
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+        
+        // Preview image before upload
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageInput = document.querySelector('#contact_form_imageFile');
+            const preview = document.querySelector('.img-thumbnail');
+            
+            if (imageInput && preview) {
+                imageInput.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        
+                        reader.addEventListener('load', function() {
+                            preview.src = reader.result;
+                        });
+                        
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

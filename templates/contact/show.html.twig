@@ -1,0 +1,280 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ contact.prenom }} {{ contact.nom }} - Détails{% endblock %}
+
+{% block body %}
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <div>
+            <a href="{{ path('app_contact_index') }}" class="btn btn-outline-secondary btn-sm me-2">
+                <i class="fas fa-arrow-left me-1"></i> Retour
+            </a>
+            <h1 class="h3 mb-0 d-inline">Détails du Contact</h1>
+        </div>
+        <div class="btn-group">
+            <a href="{{ path('app_contact_edit', {'id': contact.id}) }}" 
+               class="btn btn-warning">
+                <i class="fas fa-edit me-1"></i> Modifier
+            </a>
+            <form method="post" action="{{ path('app_contact_delete', {'id': contact.id}) }}" 
+                  onsubmit="return confirm('Supprimer définitivement ce contact ?')"
+                  class="ms-2">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ contact.id) }}">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i> Supprimer
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Details -->
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <!-- Profile Card -->
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <img src="{{ contact.image ? '/uploads/contacts/' ~ contact.image : 'https://ui-avatars.com/api/?name=' ~ contact.prenom ~ '+' ~ contact.nom ~ '&background=random&color=fff&size=200' }}" 
+                             alt="{{ contact.nomComplet }}" 
+                             class="avatar-lg mb-3">
+                    </div>
+                    <h3 class="h4 mb-1">{{ contact.prenom }} {{ contact.nom }}</h3>
+                    <p class="text-muted mb-3">{{ contact.email }}</p>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="mailto:{{ contact.email }}" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope me-1"></i> Envoyer un email
+                        </a>
+                        {% if contact.telephone %}
+                            <a href="tel:{{ contact.telephone }}" class="btn btn-outline-success">
+                                <i class="fas fa-phone me-1"></i> Appeler
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <small class="text-muted">
+                        ID: #{{ contact.id }} | 
+                        Créé le {{ contact.dateCreation|date('d/m/Y à H:i') }}
+                    </small>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6 class="card-title mb-3">
+                        <i class="fas fa-bolt me-1"></i> Actions Rapides
+                    </h6>
+                    <div class="d-grid gap-2">
+                        <a href="{{ path('app_contact_edit', {'id': contact.id}) }}" 
+                           class="btn btn-outline-warning">
+                            <i class="fas fa-edit me-1"></i> Modifier les informations
+                        </a>
+                        <a href="{{ path('app_contact_index') }}" 
+                           class="btn btn-outline-secondary">
+                            <i class="fas fa-list me-1"></i> Retour à la liste
+                        </a>
+                        <button class="btn btn-outline-info" onclick="copyContactInfo()">
+                            <i class="fas fa-copy me-1"></i> Copier les infos
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <!-- Information Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i> Informations du Contact
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Personal Info -->
+                        <div class="col-md-6 mb-4">
+                            <h6 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-user me-2"></i> Informations Personnelles
+                            </h6>
+                            <dl class="row">
+                                <dt class="col-sm-4">Nom complet:</dt>
+                                <dd class="col-sm-8">
+                                    <strong>{{ contact.prenom }} {{ contact.nom }}</strong>
+                                </dd>
+
+                                <dt class="col-sm-4">Email:</dt>
+                                <dd class="col-sm-8">
+                                    <a href="mailto:{{ contact.email }}" class="text-decoration-none">
+                                        <i class="fas fa-envelope text-primary me-1"></i> 
+                                        {{ contact.email }}
+                                    </a>
+                                </dd>
+
+                                <dt class="col-sm-4">Téléphone:</dt>
+                                <dd class="col-sm-8">
+                                    {% if contact.telephone %}
+                                        <a href="tel:{{ contact.telephone }}" class="text-decoration-none">
+                                            <i class="fas fa-phone text-success me-1"></i> 
+                                            {{ contact.telephone }}
+                                        </a>
+                                    {% else %}
+                                        <span class="text-muted">Non renseigné</span>
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                        </div>
+
+                        <!-- Additional Info -->
+                        <div class="col-md-6 mb-4">
+                            <h6 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-address-card me-2"></i> Informations Supplémentaires
+                            </h6>
+                            <dl class="row">
+                                <dt class="col-sm-4">Adresse:</dt>
+                                <dd class="col-sm-8">
+                                    {% if contact.adresse %}
+                                        <div class="border rounded p-2 bg-light">
+                                            <i class="fas fa-map-marker-alt text-warning me-1"></i>
+                                            {{ contact.adresse|nl2br }}
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted">Non renseignée</span>
+                                    {% endif %}
+                                </dd>
+
+                                <dt class="col-sm-4">Date création:</dt>
+                                <dd class="col-sm-8">
+                                    <i class="fas fa-calendar-plus text-primary me-1"></i>
+                                    {{ contact.dateCreation|date('d/m/Y à H:i') }}
+                                </dd>
+
+                                <dt class="col-sm-4">Dernière modification:</dt>
+                                <dd class="col-sm-8">
+                                    {% if contact.dateModification %}
+                                        <i class="fas fa-calendar-check text-success me-1"></i>
+                                        {{ contact.dateModification|date('d/m/Y à H:i') }}
+                                    {% else %}
+                                        <span class="text-muted">Jamais modifié</span>
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- Contact Metadata -->
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h6 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-tags me-2"></i> Métadonnées
+                            </h6>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge bg-primary p-2">
+                                    <i class="fas fa-id-card me-1"></i> ID: {{ contact.id }}
+                                </span>
+                                <span class="badge bg-success p-2">
+                                    <i class="fas fa-user me-1"></i> Contact
+                                </span>
+                                <span class="badge bg-info p-2">
+                                    <i class="fas fa-calendar me-1"></i> 
+                                    {{ contact.dateCreation|date('d/m/Y') }}
+                                </span>
+                                {% if contact.image %}
+                                    <span class="badge bg-warning p-2">
+                                        <i class="fas fa-camera me-1"></i> Avec photo
+                                    </span>
+                                {% endif %}
+                                {% if contact.telephone %}
+                                    <span class="badge bg-secondary p-2">
+                                        <i class="fas fa-phone me-1"></i> Téléphone
+                                    </span>
+                                {% endif %}
+                                {% if contact.adresse %}
+                                    <span class="badge bg-dark p-2">
+                                        <i class="fas fa-map-marker-alt me-1"></i> Adresse
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions Card -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-cogs me-2"></i> Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-edit fa-2x text-warning mb-3"></i>
+                                    <h6>Modifier</h6>
+                                    <p class="text-muted small mb-3">Modifier les informations de ce contact</p>
+                                    <a href="{{ path('app_contact_edit', {'id': contact.id}) }}" 
+                                       class="btn btn-outline-warning btn-sm">
+                                        <i class="fas fa-edit me-1"></i> Modifier
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-trash fa-2x text-danger mb-3"></i>
+                                    <h6>Supprimer</h6>
+                                    <p class="text-muted small mb-3">Supprimer définitivement ce contact</p>
+                                    <button class="btn btn-outline-danger btn-sm" 
+                                            onclick="confirmDelete()">
+                                        <i class="fas fa-trash me-1"></i> Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-print fa-2x text-info mb-3"></i>
+                                    <h6>Imprimer</h6>
+                                    <p class="text-muted small mb-3">Imprimer la fiche de ce contact</p>
+                                    <button class="btn btn-outline-info btn-sm" onclick="window.print()">
+                                        <i class="fas fa-print me-1"></i> Imprimer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function confirmDelete() {
+            if (confirm("Êtes-vous sûr de vouloir supprimer ce contact ? Cette action est irréversible.")) {
+                document.querySelector('form[action*="delete"]').submit();
+            }
+        }
+        
+        function copyContactInfo() {
+            const contactInfo = `
+Nom: {{ contact.nom }}
+Prénom: {{ contact.prenom }}
+Email: {{ contact.email }}
+Téléphone: {{ contact.telephone ?? 'Non renseigné' }}
+Adresse: {{ contact.adresse ?? 'Non renseignée' }}
+            `.trim();
+            
+            navigator.clipboard.writeText(contactInfo).then(() => {
+                alert('Informations du contact copiées dans le presse-papier !');
+            });
+        }
+    </script>
+{% endblock %}

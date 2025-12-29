@@ -1,0 +1,286 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - ContactManager{% endblock %}
+
+{% block body %}
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <div>
+            <h1 class="h3 mb-1">
+                <i class="fas fa-tachometer-alt text-primary me-2"></i> Tableau de Bord
+            </h1>
+            <p class="text-muted mb-0">Bienvenue dans votre espace de gestion de contacts</p>
+        </div>
+        <div>
+            <a href="{{ path('app_contact_new') }}" class="btn btn-primary">
+                <i class="fas fa-user-plus me-2"></i> Nouveau Contact
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card stat-card border-start border-primary border-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Total Contacts</h6>
+                            <h3 class="mb-0">{{ stats.total }}</h3>
+                            <small class="text-muted">Contacts enregistrés</small>
+                        </div>
+                        <div class="bg-primary rounded-circle p-3">
+                            <i class="fas fa-users fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card stat-card border-start border-success border-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Nouveaux (7 jours)</h6>
+                            <h3 class="mb-0">{{ stats.recent }}</h3>
+                            <small class="text-muted">Ajouts récents</small>
+                        </div>
+                        <div class="bg-success rounded-circle p-3">
+                            <i class="fas fa-calendar-plus fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card stat-card border-start border-warning border-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Avec photo</h6>
+                            <h3 class="mb-0">{{ stats.with_image }}</h3>
+                            <small class="text-muted">Contacts avec photo</small>
+                        </div>
+                        <div class="bg-warning rounded-circle p-3">
+                            <i class="fas fa-camera fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card stat-card border-start border-info border-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-2">Sans photo</h6>
+                            <h3 class="mb-0">{{ stats.without_image }}</h3>
+                            <small class="text-muted">Contacts sans photo</small>
+                        </div>
+                        <div class="bg-info rounded-circle p-3">
+                            <i class="fas fa-user-circle fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row">
+        <!-- Recent Contacts -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-clock me-2"></i> Contacts Récents
+                    </h5>
+                    <a href="{{ path('app_contact_index') }}" class="btn btn-sm btn-outline-primary">
+                        Voir tous <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if recentContacts|length > 0 %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Photo</th>
+                                        <th>Nom & Prénom</th>
+                                        <th>Email</th>
+                                        <th>Téléphone</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for contact in recentContacts %}
+                                        <tr>
+                                            <td>
+                                                <img src="{{ contact.image ? '/uploads/contacts/' ~ contact.image : 'https://ui-avatars.com/api/?name=' ~ contact.prenom ~ '+' ~ contact.nom ~ '&background=random&color=fff' }}" 
+                                                     alt="{{ contact.nomComplet }}" 
+                                                     class="contact-photo">
+                                            </td>
+                                            <td>
+                                                <strong>{{ contact.prenom }} {{ contact.nom }}</strong>
+                                            </td>
+                                            <td>
+                                                <a href="mailto:{{ contact.email }}" class="text-decoration-none">
+                                                    {{ contact.email }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {% if contact.telephone %}
+                                                    <a href="tel:{{ contact.telephone }}" class="text-decoration-none">
+                                                        {{ contact.telephone }}
+                                                    </a>
+                                                {% else %}
+                                                    <span class="text-muted">N/A</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ contact.dateCreation|date('d/m/Y') }}</td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="{{ path('app_contact_show', {'id': contact.id}) }}" 
+                                                       class="btn btn-outline-info" title="Voir">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ path('app_contact_edit', {'id': contact.id}) }}" 
+                                                       class="btn btn-outline-warning" title="Modifier">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                            <h5 class="text-muted">Aucun contact récent</h5>
+                            <p class="text-muted mb-4">Commencez par ajouter votre premier contact</p>
+                            <a href="{{ path('app_contact_new') }}" class="btn btn-primary">
+                                <i class="fas fa-user-plus me-2"></i> Ajouter un contact
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions & Stats -->
+        <div class="col-lg-4">
+            <!-- Quick Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt me-2"></i> Actions Rapides
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ path('app_contact_new') }}" class="btn btn-primary">
+                            <i class="fas fa-user-plus me-2"></i> Ajouter un contact
+                        </a>
+                        <a href="{{ path('app_contact_index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-list me-2"></i> Lister tous les contacts
+                        </a>
+                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="fas fa-search me-2"></i> Rechercher un contact
+                        </button>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <h6 class="mb-3">
+                        <i class="fas fa-chart-pie me-2"></i> Statistiques détaillées
+                    </h6>
+                    <div class="list-group">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-user-check text-success me-2"></i>
+                                Contacts complets
+                            </div>
+                            <span class="badge bg-success rounded-pill">{{ stats.total }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-mobile-alt text-primary me-2"></i>
+                                Avec téléphone
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ stats.total }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-map-marker-alt text-warning me-2"></i>
+                                Avec adresse
+                            </div>
+                            <span class="badge bg-warning rounded-pill">{{ stats.total }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Info -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i> Informations Système
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Application</small>
+                        <strong>ContactManager Pro v1.0</strong>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Environnement</small>
+                        <strong>Symfony 7 - PHP {{ constant('PHP_VERSION') }}</strong>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Base de données</small>
+                        <strong>MySQL - {{ stats.total }} contacts</strong>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Dernière mise à jour</small>
+                        <strong>{{ 'now'|date('d/m/Y à H:i') }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-search me-2"></i> Rechercher un contact
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ path('app_contact_index') }}" method="get" class="mb-0">
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" 
+                                   placeholder="Nom, prénom, email ou téléphone..." required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted mt-2 d-block">
+                            <i class="fas fa-info-circle me-1"></i>
+                            La recherche s'effectue sur tous les champs du contact.
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
