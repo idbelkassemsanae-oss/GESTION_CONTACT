@@ -20,9 +20,9 @@ $dbname = trim($parts['path'] ?? '', '/');
 try {
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
     $pdo = new PDO($dsn, $user, $pass);
-    echo "✅ Connexion PDO réussie !";
+    echo "Connexion PDO réussie !";
 } catch (PDOException $e) {
-    echo "❌ Erreur PDO : " . $e->getMessage() . "<br>";
+    echo " Erreur PDO : " . $e->getMessage() . "<br>";
     echo "DSN essayé : $dsn";
 }
 ?>
