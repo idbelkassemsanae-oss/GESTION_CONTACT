@@ -53,7 +53,7 @@ class ContactType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => '+212 1 23 45 67 89'
+                    'placeholder' => '+33 1 23 45 67 89'
                 ],
                 'row_attr' => ['class' => 'mb-3']
             ])
@@ -79,7 +79,7 @@ class ContactType extends AbstractType
                 ],
                 'constraints' => [
                     new File([
-                        'maxSize' => '12M',
+                        'maxSize' => '2M',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -89,7 +89,7 @@ class ContactType extends AbstractType
                     ])
                 ],
                 'row_attr' => ['class' => 'mb-3'],
-                'help' => 'Formats acceptés : JPG, PNG, GIF (max 12Mo)'
+                'help' => 'Formats acceptés : JPG, PNG, GIF (max 2Mo)'
             ]);
     }
 

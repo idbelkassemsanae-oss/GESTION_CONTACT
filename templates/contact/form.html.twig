@@ -76,7 +76,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Prénom *</label>
-                                {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Jean'}}) }}
+                                {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
                                 <div class="invalid-feedback">
                                     Veuillez saisir un prénom valide.
                                 </div>
@@ -84,7 +84,7 @@
                             
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Nom *</label>
-                                {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Dupont'}}) }}
+                                {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Prenom'}}) }}
                                 <div class="invalid-feedback">
                                     Veuillez saisir un nom valide.
                                 </div>
@@ -95,7 +95,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Email *</label>
-                                {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'jean.dupont@exemple.com'}}) }}
+                                {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'exemple@gmail.com'}}) }}
                                 <div class="invalid-feedback">
                                     Veuillez saisir un email valide.
                                 </div>
@@ -113,7 +113,7 @@
                         <!-- Address -->
                         <div class="mb-3">
                             <label class="form-label">Adresse</label>
-                            {{ form_widget(form.adresse, {'attr': {'class': 'form-control', 'placeholder': '123 Rue de la Paix, 75000 Paris', 'rows': 3}}) }}
+                            {{ form_widget(form.adresse, {'attr': {'class': 'form-control', 'placeholder': '123 Rue, Quartier, ville, Pays', 'rows': 3}}) }}
                         </div>
 
                         <!-- Form Actions -->
@@ -149,7 +149,7 @@
                         </li>
                         <li class="mb-2">
                             <i class="fas fa-camera text-warning me-1"></i>
-                            La photo est optionnelle, formats acceptés : JPG, PNG, GIF (max 12Mo)
+                            La photo est optionnelle, formats acceptés : JPG, PNG, GIF (max 2Mo)
                         </li>
                         <li class="mb-2">
                             <i class="fas fa-shield-alt text-success me-1"></i>
