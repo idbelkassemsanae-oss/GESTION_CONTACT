@@ -1,0 +1,112 @@
+{# templates/about/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos - ContactManager{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-header bg-info text-white">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-info-circle me-2"></i>À propos de ContactManager
+                    </h1>
+                </div>
+                <div class="card-body p-5">
+                    <div class="text-center mb-5">
+                        <i class="fas fa-address-book fa-5x text-primary mb-4"></i>
+                        <h2 class="mb-3">ContactManager Pro</h2>
+                        <p class="lead text-muted">Votre solution de gestion de contacts professionnelle</p>
+                    </div>
+                    
+                    <div class="row mb-5">
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h4 class="card-title text-primary">
+                                        <i class="fas fa-bullseye me-2"></i>Notre Mission
+                                    </h4>
+                                    <p class="card-text">
+                                        ContactManager a été conçu pour simplifier la gestion de vos contacts 
+                                        professionnels. Notre objectif est de vous offrir un outil intuitif, 
+                                        sécurisé et efficace pour organiser toutes vos relations professionnelles.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h4 class="card-title text-primary">
+                                        <i class="fas fa-star me-2"></i>Nos Valeurs
+                                    </h4>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check text-success me-2"></i>Simplicité d'utilisation</li>
+                                        <li><i class="fas fa-check text-success me-2"></i>Sécurité des données</li>
+                                        <li><i class="fas fa-check text-success me-2"></i>Innovation continue</li>
+                                        <li><i class="fas fa-check text-success me-2"></i>Support réactif</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h3 class="text-center mb-4">
+                            <i class="fas fa-cogs me-2"></i>Fonctionnalités
+                        </h3>
+                        <div class="row">
+                            <div class="col-md-4 mb-3 text-center">
+                                <div class="p-4 border rounded">
+                                    <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                                    <h5>Gestion des contacts</h5>
+                                    <p class="text-muted">Ajoutez, modifiez et organisez vos contacts</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3 text-center">
+                                <div class="p-4 border rounded">
+                                    <i class="fas fa-camera fa-3x text-primary mb-3"></i>
+                                    <h5>Photos de profil</h5>
+                                    <p class="text-muted">Ajoutez des photos à vos contacts</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3 text-center">
+                                <div class="p-4 border rounded">
+                                    <i class="fas fa-chart-bar fa-3x text-primary mb-3"></i>
+                                    <h5>Statistiques</h5>
+                                    <p class="text-muted">Visualisez vos données avec des graphiques</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-5">
+                        <h4 class="mb-4">Technologies utilisées</h4>
+                        <div class="d-flex justify-content-center flex-wrap gap-3">
+                            <span class="badge bg-primary p-3">Symfony {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }}</span>
+                            <span class="badge bg-success p-3">PHP {{ constant('PHP_VERSION') }}</span>
+                            <span class="badge bg-warning p-3">MySQL 8.0+</span>
+                            <span class="badge bg-secondary p-3">Twig</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer text-center bg-light">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <h6><i class="fas fa-code me-2"></i>Version</h6>
+                            <p class="mb-0">ContactManager Pro v1.0.0</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <h6><i class="fas fa-calendar me-2"></i>Dernière mise à jour</h6>
+                            <p class="mb-0">{{ "now"|date("d/m/Y") }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

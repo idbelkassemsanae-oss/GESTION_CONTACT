@@ -1,39 +1,77 @@
+# config/packages/security.yaml
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    # ⚠️ NE METTEZ PAS enable_authenticator_manager - il n'existe plus en Symfony 7
+    
+    # https://symfony.com/doc/current/security/passwords.html
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+        App\Entity\User:
+            algorithm: auto
+    
+    # https://symfony.com/doc/current/security/user_providers.html
     providers:
-        users_in_memory: { memory: null }
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+    
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        
         main:
             lazy: true
-            provider: users_in_memory
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+            provider: app_user_provider
+            
+            # Configuration de l'authentification par formulaire
+            form_login:
+                login_path: app_login
+                check_path: app_login
+                enable_csrf: true
+                default_target_path: app_dashboard
+                username_parameter: email
+                password_parameter: password
+                # Optionnel: Personnaliser les messages d'erreur
+                # authentication_failure_path: app_login
+                # authentication_success_handler: ~
+            
+            # Configuration de la déconnexion
+            logout:
+                path: app_logout
+                target: app_login
+                # invalidate_session: true
+            
+            # Configuration "Se souvenir de moi"
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800  # 1 semaine en secondes
+                path: /
+                always_remember_me: false
+                remember_me_parameter: '_remember_me'
+    
+    # Hiérarchie des rôles
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+    
+    # Contrôle d'accès
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
-
-when@test:
-    security:
-        password_hashers:
-            # By default, password hashers are resource intensive and take time. This is
-            # important to generate secure password hashes. In tests however, secure hashes
-            # are not important, waste resources and increase test times. The following
-            # reduces the work factor to the lowest possible values.
-            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
-                algorithm: auto
-                cost: 4 # Lowest possible value for bcrypt
-                time_cost: 3 # Lowest possible value for argon
-                memory_cost: 10 # Lowest possible value for argon
+        # Pages publiques (accessibles sans authentification)
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/register$, roles: PUBLIC_ACCESS }
+        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
+        
+        # API/Assets publics
+        - { path: ^/api/public, roles: PUBLIC_ACCESS }
+        - { path: ^/uploads, roles: PUBLIC_ACCESS }
+        
+        # Pages admin (nécessitent ROLE_ADMIN)
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        
+        # Dashboard et contacts (nécessitent au moins ROLE_USER)
+        - { path: ^/dashboard, roles: ROLE_USER }
+        - { path: ^/contact, roles: ROLE_USER }
+        
+        # Par défaut, toutes les autres pages nécessitent une authentification
+        - { path: ^/, roles: ROLE_USER }

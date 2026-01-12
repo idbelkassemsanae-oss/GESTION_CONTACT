@@ -172,11 +172,6 @@ class Contact
         return $this;
     }
 
-    public function getNomComplet(): string
-    {
-        return $this->prenom . ' ' . $this->nom;
-    }
-
     // Gestion des images VichUploader
     public function setImageFile(?File $imageFile = null): void
     {
@@ -192,11 +187,17 @@ class Contact
         return $this->imageFile;
     }
 
-    public function getImagePath(): ?string
+    // AJOUTEZ CES DEUX MÉTHODES ↓
+    public function getImagePath(): string
     {
         if ($this->image) {
             return '/uploads/contacts/' . $this->image;
         }
-        return '/images/default-avatar.png';
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->prenom . ' ' . $this->nom) . '&background=random&color=fff';
+    }
+
+    public function getNomComplet(): string
+    {
+        return $this->prenom . ' ' . $this->nom;
     }
 }

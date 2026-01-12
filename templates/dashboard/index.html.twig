@@ -11,10 +11,15 @@
             </h1>
             <p class="text-muted mb-0">Bienvenue dans votre espace de gestion de contacts</p>
         </div>
-        <div>
-            <a href="{{ path('app_contact_new') }}" class="btn btn-primary">
-                <i class="fas fa-user-plus me-2"></i> Nouveau Contact
-            </a>
+        <div class="text-end">
+            <p class="mb-0">
+                <i class="fas fa-user me-1 text-primary"></i> 
+                <strong>{{ user.nomComplet }}</strong>
+            </p>
+            <small class="text-muted">{{ user.email }}</small>
+            <p class="text-muted mb-0">
+                <small>Membre depuis {{ user.dateCreation|date('d/m/Y') }}</small>
+            </p>
         </div>
     </div>
 
@@ -83,6 +88,68 @@
                         <div class="bg-info rounded-circle p-3">
                             <i class="fas fa-user-circle fa-2x text-white"></i>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats Row -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title d-flex align-items-center">
+                        <i class="fas fa-users text-primary me-2"></i> Mes Contacts
+                    </h5>
+                    <p class="card-text display-6 text-primary mb-3">{{ contacts|length }}</p>
+                    <p class="text-muted mb-4">Total de vos contacts personnels</p>
+                    <a href="{{ path('app_contact_index') }}" class="btn btn-primary w-100">
+                        <i class="fas fa-list me-2"></i> Gérer les contacts
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title d-flex align-items-center">
+                        <i class="fas fa-user text-success me-2"></i> Mon Compte
+                    </h5>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-3">
+                            <div class="bg-light rounded-circle p-3">
+                                <i class="fas fa-user-circle fa-2x text-success"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">{{ user.prenom }} {{ user.nom }}</h6>
+                            <small class="text-muted">{{ user.email }}</small>
+                        </div>
+                    </div>
+                    <p class="text-muted mb-0">
+                        <i class="fas fa-calendar me-1"></i>
+                        Membre depuis {{ user.dateCreation|date('d/m/Y') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title d-flex align-items-center">
+                        <i class="fas fa-chart-line text-warning me-2"></i> Statistiques
+                    </h5>
+                    <p class="card-text mb-4">Application de gestion de contacts professionnelle</p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ path('app_contact_new') }}" class="btn btn-warning">
+                            <i class="fas fa-plus me-2"></i> Ajouter un contact
+                        </a>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="fas fa-search me-2"></i> Recherche avancée
+                        </button>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,44 @@
+# config/routes.yaml
+
+# Routes du contrôleur de sécurité
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+    methods: [GET, POST]
+
+app_logout:
+    path: /logout
+
+# Route du tableau de bord
+app_dashboard:
+    path: /dashboard
+    controller: App\Controller\DashboardController::index
+
+# Routes des contacts (si vous avez un ContactController)
+app_contact_index:
+    path: /contact
+    controller: App\Controller\ContactController::index
+    methods: GET
+
+app_contact_new:
+    path: /contact/new
+    controller: App\Controller\ContactController::new
+    methods: [GET, POST]
+
+# Optionnel : Routes d'inscription si vous avez un RegistrationController
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+    methods: [GET, POST]
+
+# Optionnel : Route pour la page d'accueil
+app_home:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+    defaults:
+        route: app_dashboard
+        permanent: true
+
 controllers:
     resource:
         path: ../src/Controller/

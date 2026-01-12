@@ -1,0 +1,99 @@
+{# templates/registration/register.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - ContactManager{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-success text-white">
+                    <h1 class="h3 mb-0 text-center">
+                        <i class="fas fa-user-plus me-2"></i>Créer un compte
+                    </h1>
+                </div>
+                <div class="card-body p-4">
+                    {{ form_start(registrationForm) }}
+                    
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.prenom, {
+                                    label: 'Prénom',
+                                    attr: {
+                                        class: 'form-control form-control-lg',
+                                        placeholder: 'Votre prénom'
+                                    },
+                                    row_attr: {
+                                        class: 'form-floating mb-3'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(registrationForm.nom, {
+                                    label: 'Nom',
+                                    attr: {
+                                        class: 'form-control form-control-lg',
+                                        placeholder: 'Votre nom'
+                                    },
+                                    row_attr: {
+                                        class: 'form-floating mb-3'
+                                    }
+                                }) }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.email, {
+                                label: 'Adresse email',
+                                attr: {
+                                    class: 'form-control form-control-lg',
+                                    placeholder: 'votre@email.com'
+                                },
+                                row_attr: {
+                                    class: 'form-floating mb-3'
+                                }
+                            }) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form_row(registrationForm.plainPassword, {
+                                label: 'Mot de passe',
+                                attr: {
+                                    class: 'form-control form-control-lg',
+                                    placeholder: 'Votre mot de passe'
+                                },
+                                row_attr: {
+                                    class: 'form-floating mb-3'
+                                }
+                            }) }}
+                        </div>
+                        
+                        <div class="mb-4 form-check">
+                            {{ form_row(registrationForm.agreeTerms, {
+                                label: 'J\'accepte les conditions d\'utilisation',
+                                attr: {
+                                    class: 'form-check-input'
+                                },
+                                row_attr: {
+                                    class: 'mb-3'
+                                }
+                            }) }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>S'inscrire
+                            </button>
+                            <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-sign-in-alt me-2"></i>Déjà un compte ? Connectez-vous
+                            </a>
+                        </div>
+                    
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

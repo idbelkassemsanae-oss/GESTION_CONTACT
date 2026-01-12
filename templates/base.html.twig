@@ -144,6 +144,23 @@
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             color: white;
         }
+        
+        /* Styles pour la navbar dynamique */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        
+        .dropdown-item:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .navbar-nav .nav-link.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
     </style>
     
     {% block stylesheets %}{% endblock %}
@@ -152,103 +169,172 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
         <div class="container">
-            <a class="navbar-brand" href="{{ path('app_dashboard') }}">
+            <a class="navbar-brand" href="{% if app.user %}{{ path('app_dashboard') }}{% else %}{{ path('app_login') }}{% endif %}">
                 <i class="fas fa-address-book me-2"></i>
-                <span class="logo-text text-primary">CONTACT MANAGER</span>
+                <span class="logo-text">CONTACT MANAGER</span>
             </a>
             
-            <div class="d-flex align-items-center">
-                <span class="me-3 text-muted">
-                    <i class="fas fa-calendar-alt me-1"></i> {{ 'now'|date('d/m/Y') }}
-                </span>
-                <div class="dropdown">
-                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-user me-1"></i> Admin
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Paramètres</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Déconnexion</a></li>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                {% if app.user %}
+                    <!-- Menu pour utilisateur CONNECTÉ -->
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {{ app.request.get('_route') == 'app_dashboard' ? 'active' : '' }}" 
+                               href="{{ path('app_dashboard') }}">
+                                <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ app.request.get('_route') starts with 'app_contact' and app.request.get('_route') != 'app_contact_new' ? 'active' : '' }}" 
+                               href="{{ path('app_contact_index') }}">
+                                <i class="fas fa-users me-1"></i> Contacts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ app.request.get('_route') == 'app_contact_new' ? 'active' : '' }}" 
+                               href="{{ path('app_contact_new') }}">
+                                <i class="fas fa-user-plus me-1"></i> Nouveau
+                            </a>
+                        </li>
                     </ul>
-                </div>
+                    
+                    <!-- Menu utilisateur -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i> 
+                                {% if app.user.prenom is defined %}
+                                    {{ app.user.prenom }}
+                                {% else %}
+                                    Mon compte
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <span class="dropdown-item-text">
+                                        <small>Connecté en tant que</small><br>
+                                        <strong>{{ app.user.email }}</strong>
+                                    </span>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cog me-2"></i> Mon profil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Déconnexion
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                {% else %}
+                    <!-- Menu pour visiteur NON CONNECTÉ -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {{ app.request.get('_route') == 'app_login' ? 'active' : '' }}" 
+                               href="{{ path('app_login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i> Connexion
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ app.request.get('_route') == 'app_register' ? 'active' : '' }}" 
+                               href="{{ path('app_register') }}">
+                                <i class="fas fa-user-plus me-1"></i> Inscription
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
             </div>
         </div>
     </nav>
 
     <div class="container-fluid mt-3">
         <div class="row">
-            <!-- Sidebar -->
-            <div class="col-lg-2 d-none d-lg-block">
-                <div class="sidebar p-3">
-                    <div class="text-center mb-4">
-                        <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-2" 
-                             style="width: 80px; height: 80px;">
-                            <i class="fas fa-users fa-2x text-white"></i>
+            {% if app.user %}
+                <!-- Sidebar (seulement visible si connecté) -->
+                <div class="col-lg-2 d-none d-lg-block">
+                    <div class="sidebar p-3">
+                        <div class="text-center mb-4">
+                            <div class="bg-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-2" 
+                                 style="width: 80px; height: 80px;">
+                                <i class="fas fa-users fa-2x text-white"></i>
+                            </div>
+                            <h6 class="fw-bold text-primary">MENU PRINCIPAL</h6>
                         </div>
-                        <h6 class="fw-bold text-primary">MENU PRINCIPAL</h6>
-                    </div>
-                    
-                    <ul class="nav flex-column mb-4">
-                        <li class="nav-item">
-                            <a class="nav-link {{ app.request.get('_route') == 'app_dashboard' ? 'active' : '' }}" 
-                               href="{{ path('app_dashboard') }}">
-                                <i class="fas fa-tachometer-alt me-2"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ app.request.get('_route') starts with 'app_contact' and app.request.get('_route') != 'app_contact_new' ? 'active' : '' }}" 
-                               href="{{ path('app_contact_index') }}">
-                                <i class="fas fa-address-card me-2"></i> Tous les contacts
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ app.request.get('_route') == 'app_contact_new' ? 'active' : '' }}" 
-                               href="{{ path('app_contact_new') }}">
-                                <i class="fas fa-user-plus me-2"></i> Ajouter un contact
-                            </a>
-                        </li>
-                    </ul>
-                    
-                    <h6 class="text-muted mb-3">OUTILS</h6>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-search me-2"></i> Recherche avancée
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-file-export me-2"></i> Exporter
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-print me-2"></i> Imprimer
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ app.request.get('_route') == 'app_about' ? 'active' : '' }}" 
-                               href="{{ path('app_about') }}">
-                                <i class="fas fa-info-circle me-2"></i> À propos
-                            </a>
-                        </li>
-                    </ul>
-                    
-                    <div class="mt-5 p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-2">
-                            <i class="fas fa-database me-1"></i>
-                            <strong>Gestion Contacts v1.0</strong>
-                        </small>
-                        <small class="text-muted">
-                            <i class="fas fa-copyright me-1"></i>
-                            {{ 'now'|date('Y') }} Tous droits réservés
-                        </small>
+                        
+                        <ul class="nav flex-column mb-4">
+                            <li class="nav-item">
+                                <a class="nav-link {{ app.request.get('_route') == 'app_dashboard' ? 'active' : '' }}" 
+                                   href="{{ path('app_dashboard') }}">
+                                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ app.request.get('_route') starts with 'app_contact' and app.request.get('_route') != 'app_contact_new' ? 'active' : '' }}" 
+                                   href="{{ path('app_contact_index') }}">
+                                    <i class="fas fa-address-card me-2"></i> Tous les contacts
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ app.request.get('_route') == 'app_contact_new' ? 'active' : '' }}" 
+                                   href="{{ path('app_contact_new') }}">
+                                    <i class="fas fa-user-plus me-2"></i> Ajouter un contact
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <h6 class="text-muted mb-3">OUTILS</h6>
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-search me-2"></i> Recherche avancée
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-file-export me-2"></i> Exporter
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-print me-2"></i> Imprimer
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ app.request.get('_route') == 'app_about' ? 'active' : '' }}" 
+                                   href="{{ path('app_about') }}">
+                                    <i class="fas fa-info-circle me-2"></i> À propos
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-5 p-3 bg-light rounded">
+                            <small class="text-muted d-block mb-2">
+                                <i class="fas fa-database me-1"></i>
+                                <strong>Gestion Contacts v1.0</strong>
+                            </small>
+                            <small class="text-muted">
+                                <i class="fas fa-copyright me-1"></i>
+                                {{ 'now'|date('Y') }} Tous droits réservés
+                            </small>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Main Content -->
-            <main class="col-lg-10 px-lg-4">
+                
+                <!-- Main Content (10 colonnes si connecté) -->
+                <main class="col-lg-10 px-lg-4">
+            {% else %}
+                <!-- Main Content (12 colonnes si non connecté) -->
+                <main class="col-12 px-lg-4">
+            {% endif %}
+            
                 <!-- Flash Messages -->
                 {% for message in app.flashes('success') %}
                     <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
@@ -284,6 +370,15 @@
                 <div class="col-md-6">
                     <h5><i class="fas fa-address-book me-2"></i>ContactManager</h5>
                     <p class="mb-0">Application professionnelle de gestion de contacts développée avec Symfony 7</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">
+                        {% if app.user %}
+                            Connecté en tant que: <strong>{{ app.user.email }}</strong>
+                        {% else %}
+                            <a href="{{ path('app_login') }}" class="text-white">Connectez-vous</a> pour accéder à l'application
+                        {% endif %}
+                    </p>
                 </div>
             </div>
         </div>
@@ -322,12 +417,20 @@
                     this.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
                 });
             });
+            
+            // Gestion du menu responsive
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            if (navbarToggler) {
+                navbarToggler.addEventListener('click', function() {
+                    document.querySelector('#navbarNav').classList.toggle('show');
+                });
+            }
         });
         
         // Fonction de recherche
         function performSearch() {
             const searchInput = document.getElementById('searchInput');
-            if (searchInput.value.trim() !== '') {
+            if (searchInput && searchInput.value.trim() !== '') {
                 window.location.href = '{{ path("app_contact_index") }}?search=' + encodeURIComponent(searchInput.value);
             }
         }

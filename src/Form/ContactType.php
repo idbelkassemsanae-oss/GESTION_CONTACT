@@ -79,12 +79,12 @@ class ContactType extends AbstractType
                 ],
                 'constraints' => [
                     new File([
-                        'maxSize' => '2M',
+                        'maxSize' => '10M',
                         'mimeTypes' => [
                             'image/jpeg',
-                            'image/png',
+                            'image/png',   
                             'image/gif',
-                        ],
+                        ], 
                         'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG ou GIF)',
                     ])
                 ],
